@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; base-uri 'none'; form-action 'none'">
+<title>MIXMASH · Email confirmation</title>
+<script>
+// Discard credentials before rendering. No analytics, external assets or requests.
+const confirmation = new URLSearchParams(location.hash.slice(1));
+const failed = confirmation.has('error') || new URLSearchParams(location.search).has('error');
+const confirmed = confirmation.has('access_token') && confirmation.get('type') === 'signup';
+history.replaceState(null, '', location.pathname);
+addEventListener('DOMContentLoaded', () => {
+  if (failed) {
+    document.querySelector('h1').textContent = 'Confirmation link unavailable';
+    document.querySelector('#message').textContent = 'This link may have expired or already been used. Return to MIXMASH and try signing in. Contact the playtest organizer if you still need help confirming your email.';
+  } else if (confirmed) {
+    document.querySelector('h1').textContent = 'Email confirmed';
+    document.querySelector('#message').textContent = 'Your email is verified. Return to MIXMASH and sign in with your email and password.';
+  }
+});
+</script>
+<style>
+:root{color-scheme:dark;font-family:Arial,Helvetica,sans-serif;background:#101016;color:#f5eef4}
+*{box-sizing:border-box}body{margin:0;min-height:100svh;display:grid;place-items:center;padding:30px;background:radial-gradient(ellipse at 20% 0%,#452d43 0,transparent 65%),#101016}
+main{width:min(560px,100%);border-top:3px solid #dd94c5;padding:38px 0}.brand{font-size:18px;font-weight:900;letter-spacing:.22em;color:#dd94c5;margin:0 0 58px}h1{font-size:clamp(32px,7vw,46px);line-height:1.08;margin:0 0 22px;letter-spacing:-.04em}p{font-size:17px;line-height:1.65;color:#cec4d0}.hint{margin-top:42px;padding-top:22px;border-top:1px solid #3a303f;font-size:13px;color:#918997}
+</style>
+</head>
+<body><main><p class="brand">MIXMASH</p><h1>Return to MIXMASH</h1><p id="message">If you arrived here from your confirmation email, return to the game and sign in with your email and password.</p><p class="hint">You can close this tab. Your password is entered only in the game.</p></main></body>
+</html>
